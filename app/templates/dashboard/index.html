@@ -1,98 +1,113 @@
-{% extends 'dashboard/dashboard.html' %}
-
-{% block title %}Home{% endblock %}
-
-{% block main %}
-<main>
-    <section class="insights">
-        <h2>Insights</h2>
-        <div class="grid">
-            <ul>
-                <li>104</li>
-                <li>102</li>
-                <li>100</li>
-                <li>98</li>
-            </ul>
+{% extends 'dashboard/base.html' %} {% block title %}Dashboard{% endblock %} {%
+block nav %}
+<a href="{{ url_for('dashboard.index') }}">
+  <button arial-label="dashboard" data-active>
+    <svg id="icon-dashboard" viewBox="0 0 24 24">
+      <path
+        d="M12.984 3h8.016v6h-8.016v-6zM12.984 21v-9.984h8.016v9.984h-8.016zM3 21v-6h8.016v6h-8.016zM3 12.984v-9.984h8.016v9.984h-8.016z"
+      ></path>
+    </svg>
+  </button>
+</a>
+<a href="{{ url_for('dashboard.transactions') }}">
+  <button arial-label="analytics">
+    <svg id="icon-pie_chart" viewBox="0 0 24 24">
+      <path
+        d="M13.031 13.031h8.953q-0.328 3.563-2.859 6.094t-6.094 2.859v-8.953zM13.031 2.016q3.563 0.328 6.094 2.859t2.859 6.094h-8.953v-8.953zM11.016 2.016v19.969q-3.797-0.375-6.398-3.234t-2.602-6.75 2.602-6.75 6.398-3.234z"
+      ></path>
+    </svg>
+  </button>
+</a>
+<a href="{{ url_for('dashboard.accounts') }}">
+  <button arial-label="wallet">
+    <svg id="icon-account_balance_wallet" viewBox="0 0 24 24">
+      <path
+        d="M15.984 13.5q0.609 0 1.055-0.422t0.445-1.078-0.445-1.078-1.055-0.422-1.055 0.422-0.445 1.078 0.445 1.078 1.055 0.422zM12 15.984v-7.969h9.984v7.969h-9.984zM21 18v0.984q0 0.797-0.609 1.406t-1.406 0.609h-13.969q-0.844 0-1.43-0.586t-0.586-1.43v-13.969q0-0.844 0.586-1.43t1.43-0.586h13.969q0.797 0 1.406 0.609t0.609 1.406v0.984h-9q-0.844 0-1.43 0.586t-0.586 1.43v7.969q0 0.844 0.586 1.43t1.43 0.586h9z"
+      ></path>
+    </svg>
+  </button>
+</a>
+{% endblock %} {% block main %}
+<section class="financial">
+  <h2>Create Account</h2>
+  <div class="form-container">
+    <form method="post" action="{{ url_for('dashboard.create_account') }}">
+      <input type="text" name="name" placeholder="Name" />
+      <select name="type" class="fselect">
+        <option value="" disabled selected>Type</option>
+        "
+        <option value="asset">Asset</option>
+        <option value="liability">Liability</option>
+        <option value="equity">Equity</option>
+        <option value="revenue">Revenue</option>
+        <option value="expense">Expense</option>
+      </select>
+      <button>Create</button>
+    </form>
+  </div>
+</section>
+<section class="accounts">
+  <h2>Accounts</h2>
+  <div class="scrollable">
+    <ul>
+      {% for account in accounts %}
+      <li>
+        <div>
+          <h4>{{ account['name'] }}</h4>
+          <p>{{ account['type'] }}</p>
         </div>
-    </section>
-    <section class="wallets">
-        <div class="head">
-            <h2>Wallets</h2>
-            <select class="wallet-name" id="wallet-name"
-                onchange="showBalance()">
-                {% for account in accounts %}
-                <option value="{{ account['account_name'] }}"
-                    data-balance="{{ account['balance'] }}">
-                    {{ account['account_name'] }}
-                </option>
-                {% endfor %}
-            </select>
-        </div>
-
-        <div class="head">
-            <div class="balance">
-                <h1>₱ <span id="balance-value"></span></h1>
-            </div>
-        </div>
-    </section>
-    <section class="transactions">
-        <div class="head">
-            <h2>Transactions</h2>
-            <a href="{{ url_for('dashboard.transactions') }}">
-                <h4>All</h4>
-            </a>
-        </div>
-        <ul>
-            <li>
-                <span>Date</span>
-                <span>Type</span>
-                <span>Category</span>
-                <span>Amount</span>
-            </li>
-            {% for transaction in transactions %}
-            <li>
-                <span>{{ transaction['transaction_date'][0:10] }}</span>
-                <span>{{ transaction['transaction_type'] }}</span>
-                <span>{{ transaction['category_name'] }}</span>
-                <span>{{ transaction['amount'] }}</span>
-            </li>
-            {% endfor %}
-        </ul>
-    </section>
-    <section class="bills">
-        <div class="head">
-            <h2>Upcoming Bills</h2>
-            <a href="{{ url_for('dashboard.bills') }}">
-                <h4>All</h4>
-            </a>
-        </div>
-        <ul>
-            {% for bill in bills %}
-            <li>
-                <div>
-                    <h4>{{ bill['bill_name'] }}</h4>
-                    <time>{{ bill['due_date'] }}</time>
-                    <output>₱ {{ bill['amount'] }}</output>
-                </div>
-            </li>
-            {% endfor %}
-        </ul>
-    </section>
-</main>
-<script>
-    // Function to update the balance based on the selected option
-    function showBalance() {
-        var select = document.getElementById('wallet-name');
-        var selectedOption = select.options[select.selectedIndex];  // Get the selected option
-        var balance = selectedOption.getAttribute('data-balance');  // Get the balance from the option's data-balance attribute
-        
-        // Update the balance display
-        document.getElementById('balance-value').innerText = balance;
-    }
-
-    // Initialize the balance when the page loads (first wallet selection)
-    window.onload = function() {
-        showBalance();
-    }
-</script>
+        <output>₱ {{ account['balance'] }}</output>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</section>
+<section class="Forms">
+  <div class="head">
+    <h2>Add Transaction</h2>
+  </div>
+  <div class="form-container">
+    <form method="post" action="{{ url_for('dashboard.create_transaction') }}">
+      <input type="date" name="date" />
+      <input type="text" name="description" placeholder="Description" />
+      <input type="number" name="value" placeholder="Value" />
+      <div class="crdr">
+        <select name="credit">
+          <option value="" disabled selected>Credit</option>
+          " {% for account in accounts %}
+          <option value="{{ account['id'] }}">{{ account['name'] }}</option>
+          {% endfor %}
+        </select>
+        <select name="debit">
+          <option value="" disabled selected>Debit</option>
+          " {% for account in accounts %}
+          <option value="{{ account['id'] }}">{{ account['name'] }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <button>Add</button>
+    </form>
+  </div>
+</section>
+<section class="profits">
+  <div class="head">
+    <h2>Transactions</h2>
+    <svg id="icon-update" viewBox="0 0 24 24">
+      <path
+        d="M12.516 8.016v4.219l3.469 2.109-0.703 1.219-4.266-2.578v-4.969h1.5zM21 10.125h-6.797l2.766-2.813q-2.063-2.063-4.945-2.086t-4.945 1.992q-0.844 0.844-1.453 2.273t-0.609 2.602 0.609 2.602 1.453 2.273 2.297 1.453 2.625 0.609 2.648-0.609 2.32-1.453q2.016-2.016 2.016-4.875h2.016q0 3.703-2.625 6.281-2.625 2.625-6.375 2.625t-6.375-2.625q-2.625-2.578-2.625-6.258t2.625-6.305q1.078-1.078 2.93-1.852t3.398-0.773 3.398 0.773 2.93 1.852l2.719-2.813v7.125z"
+      ></path>
+    </svg>
+  </div>
+  <ul>
+    {% for transaction in transactions %}
+    <li>
+      <div>
+        <h4>{{ transaction['date'] }}</h4>
+        <p>{{ transaction['description'] }}</p>
+      </div>
+      <output>₱ {{ transaction['amount'] }}</output>
+    </li>
+    {% endfor %}
+  </ul>
+</section>
 {% endblock %}

@@ -1,66 +1,70 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Auth</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/auth/style.css') }}"
+    />
+  </head>
 
-{% block title %}Authentication{% endblock %}
+  <body>
+    <!-- partial:index.partial.html -->
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <title>Slide Navbar</title>
+        <link rel="stylesheet" type="text/css" href="slide navbar style.css" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Jost:wght@500&display=swap"
+          rel="stylesheet"
+        />
+      </head>
+      <body>
+        <div class="main">
+          <input type="checkbox" id="chk" aria-hidden="true" />
 
-{% block link %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}">
-{% endblock %}
+          <div class="signup">
+            <form method="post" action="{{ url_for('auth.register') }}">
+              <label for="chk" aria-hidden="true">Sign up</label>
+              <input
+                type="text"
+                name="username"
+                placeholder="Username"
+                required=""
+              />
+              <input
+                type="password"
+                name="password"
+                placeholder="Password"
+                required=""
+              />
+              <button>Sign up</button>
+            </form>
+          </div>
 
-{% block body %}
-<div class="container {{ rap }}" id="container">
-    <div class="form-container sign-up-container">
-        <form action="/auth/register" method="post">
-            <h1>Create Account</h1>
-            {% if signup %}
-            {% for message in get_flashed_messages() %}
-            <div class="flash">{{ message }}</div>
-            {% endfor %}
-            {% endif %}
-            <input name="username" type="text" placeholder="Username" />
-            <input name="first_name" type="text" placeholder="First Name" />
-            <input name="middle_name" type="text" placeholder="Middle Name" />
-            <div class="cb">
-                <input id="cb" name="no_middle_name" type="checkbox" />
-                <label for="cb">No Legal Middle Name</label>
-            </div>
-            <input name="last_name" type="text" placeholder="Last Name" />
-            <input name="email" type="email" placeholder="Email" />
-            <input name="password" type="password" placeholder="Password" />
-            <input name="confirm_password" type="password"
-                placeholder="Confirm Password" />
-            <button type="submit">Sign Up</button>
-        </form>
-    </div>
-    <div class="form-container sign-in-container">
-        <form action="/auth/login" method="post">
-            <h1>Sign in</h1>
-            {% if login %}
-            {% for message in get_flashed_messages() %}
-            <div class="flash">{{ message }}</div>
-            {% endfor %}
-            {% endif %}
-            <input name="username" type="text" placeholder="Username" />
-            <input name="password" type="password" placeholder="Password" />
-            <!-- <a href="#">Forgot your password?</a> -->
-            <button type="submit">Sign In</button>
-        </form>
-    </div>
-    <div class="overlay-container">
-        <div class="overlay">
-            <div class="overlay-panel overlay-left">
-                <h1>Welcome Back!</h1>
-                <p>To keep connected with us please login with your personal
-                    info</p>
-                <button class="ghost" id="signIn">Sign In</button>
-            </div>
-            <div class="overlay-panel overlay-right">
-                <h1>Hello, Friend!</h1>
-                <p>Enter your personal details and start journey with us</p>
-                <button class="ghost" id="signUp">Sign Up</button>
-            </div>
+          <div class="login">
+            <form method="post" action="{{ url_for('auth.login') }}">
+              <label for="chk" aria-hidden="true">Login</label>
+              <input
+                type="text"
+                name="username"
+                placeholder="Username"
+                required=""
+              />
+              <input
+                type="password"
+                name="password"
+                placeholder="Password"
+                required=""
+              />
+              <button>Login</button>
+            </form>
+          </div>
         </div>
-    </div>
-</div>
-
-<script src="{{ url_for('static', filename='js/auth.js') }}"></script>
-{% endblock %}
+      </body>
+    </html>
+    <!-- partial -->
+  </body>
+</html>
